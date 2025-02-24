@@ -11,11 +11,11 @@ import (
 )
 
 type Credenciales struct {
-Id int `orm:"column(Id_Creacion);pk"`
+Id int `orm:"column(Id_Creacion);pk;auto"`
 Contrasena string `orm:"column(Contraseña)"`
 Activo bool `orm:"column(Activo)"`
-FechaCreacion time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone)"`
-FechaModificacion time.Time `orm:"column(Fecha_Modificacion);type(timestamp with time zone)"`
+FechaCreacion time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone);auto_now_add"`
+FechaModificacion time.Time `orm:"column(Fecha_Modificacion);type(timestamp with time zone);auto_now"`
 }
 
 
@@ -31,6 +31,7 @@ func init() {
 // last inserted Id on success.
 func AddCredenciales(m *Credenciales) (id int64, err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	id, err = o.Insert(m)
 	return
 }

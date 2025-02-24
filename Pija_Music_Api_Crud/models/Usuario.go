@@ -11,13 +11,13 @@ import (
 )
 
 type Usuario struct {
-	Id                 int       `orm:"column(Id_Usuario);pk"`
+	Id                 int       `orm:"column(Id_Usuario);pk;auto"`
 	Nombres            string    `orm:"column(Nombres)"`
 	Apellido           string    `orm:"column(Apellido)"`
 	Email              string    `orm:"column(Email)"`
 	Activo             bool      `orm:"column(Activo)"`
-	FechaCreacion      time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone)"`
-	FecchaModificasion time.Time `orm:"column(Feccha_Modificasion);type(timestamp with time zone)"`
+	FechaCreacion      time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone);auto_now_add"`
+	FecchaModificasion time.Time `orm:"column(Feccha_Modificasion);type(timestamp with time zone):auto_now"`
 }
 
 func (t *Usuario) TableName() string {
@@ -32,6 +32,7 @@ func init() {
 // last inserted Id on success.
 func AddUsuario(m *Usuario) (id int64, err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	id, err = o.Insert(m)
 	return
 }

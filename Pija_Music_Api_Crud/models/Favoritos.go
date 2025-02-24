@@ -11,13 +11,13 @@ import (
 )
 
 type Favoritos struct {
-	Id                int        `orm:"column(Id_Favoritos);pk"`
+	Id                int        `orm:"column(Id_Favoritos);pk;auto"`
 	IdUsuario         *Usuario   `orm:"column(Id_Usuario);rel(fk)"`
 	IdCanciones       *Canciones `orm:"column(Id_Canciones);rel(fk)"`
 	FechaAgregado     string     `orm:"column(Fecha_agregado)"`
 	Activo            bool       `orm:"column(Activo)"`
-	FechaCreacion     time.Time  `orm:"column(Fecha_creacion);type(timestamp with time zone)"`
-	FechaModificacion time.Time  `orm:"column(Fecha_Modificacion);type(timestamp with time zone)"`
+	FechaCreacion     time.Time  `orm:"column(Fecha_creacion);type(timestamp with time zone);auto_now_add"`
+	FechaModificacion time.Time  `orm:"column(Fecha_Modificacion);type(timestamp with time zone);auto_now"`
 }
 
 func (t *Favoritos) TableName() string {
@@ -32,6 +32,7 @@ func init() {
 // last inserted Id on success.
 func AddFavoritos(m *Favoritos) (id int64, err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	id, err = o.Insert(m)
 	return
 }
