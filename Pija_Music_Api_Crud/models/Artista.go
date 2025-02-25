@@ -133,6 +133,7 @@ func GetAllArtista(query map[string]string, fields []string, sortby []string, or
 // the record to be updated doesn't exist
 func UpdateArtistaById(m *Artista) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := Artista{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {

@@ -134,6 +134,7 @@ func GetAllLugares(query map[string]string, fields []string, sortby []string, or
 // the record to be updated doesn't exist
 func UpdateLugaresById(m *Lugares) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := Lugares{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {

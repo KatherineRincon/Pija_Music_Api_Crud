@@ -131,6 +131,7 @@ func GetAllComida(query map[string]string, fields []string, sortby []string, ord
 // the record to be updated doesn't exist
 func UpdateComidaById(m *Comida) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := Comida{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {

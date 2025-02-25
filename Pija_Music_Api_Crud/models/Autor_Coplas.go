@@ -130,6 +130,7 @@ func GetAllAutorCoplas(query map[string]string, fields []string, sortby []string
 // the record to be updated doesn't exist
 func UpdateAutorCoplasById(m *AutorCoplas) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := AutorCoplas{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {

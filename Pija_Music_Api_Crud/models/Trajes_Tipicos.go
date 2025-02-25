@@ -133,6 +133,7 @@ func GetAllTrajesTipicos(query map[string]string, fields []string, sortby []stri
 // the record to be updated doesn't exist
 func UpdateTrajesTipicosById(m *TrajesTipicos) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := TrajesTipicos{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {

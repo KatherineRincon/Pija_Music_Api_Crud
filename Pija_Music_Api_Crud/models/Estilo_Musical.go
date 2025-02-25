@@ -130,6 +130,7 @@ func GetAllEstiloMusical(query map[string]string, fields []string, sortby []stri
 // the record to be updated doesn't exist
 func UpdateEstiloMusicalById(m *EstiloMusical) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := EstiloMusical{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
