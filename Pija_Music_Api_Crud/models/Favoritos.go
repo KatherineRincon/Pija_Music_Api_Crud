@@ -53,7 +53,7 @@ func GetFavoritosById(id int) (v *Favoritos, err error) {
 func GetAllFavoritos(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(Favoritos))
+	qs := o.QueryTable(new(Favoritos)).RelatedSel()
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -130,6 +130,7 @@ func GetAllFavoritos(query map[string]string, fields []string, sortby []string, 
 // the record to be updated doesn't exist
 func UpdateFavoritosById(m *Favoritos) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := Favoritos{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {

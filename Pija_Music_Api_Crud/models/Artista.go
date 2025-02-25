@@ -56,7 +56,7 @@ func GetArtistaById(id int) (v *Artista, err error) {
 func GetAllArtista(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(Artista))
+	qs := o.QueryTable(new(Artista)).RelatedSel()
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute

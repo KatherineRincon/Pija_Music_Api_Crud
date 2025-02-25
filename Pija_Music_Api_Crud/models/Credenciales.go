@@ -11,7 +11,7 @@ import (
 )
 
 type Credenciales struct {
-Id int `orm:"column(Id_Creacion);pk;auto"`
+Id int `orm:"column(Id_Credenciales);pk;auto"`
 Contrasena string `orm:"column(Contraseña)"`
 Activo bool `orm:"column(Activo)"`
 FechaCreacion time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone);auto_now_add"`
@@ -52,7 +52,7 @@ func GetCredencialesById(id int) (v *Credenciales, err error) {
 func GetAllCredenciales(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(Credenciales))
+	qs := o.QueryTable(new(Credenciales)).RelatedSel()
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -129,6 +129,7 @@ func GetAllCredenciales(query map[string]string, fields []string, sortby []strin
 // the record to be updated doesn't exist
 func UpdateCredencialesById(m *Credenciales) (err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	v := Credenciales{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
