@@ -11,7 +11,7 @@ import (
 )
 
 type Canciones struct {
-	Id                 int            `orm:"column(Id_Canciones);pk"`
+	Id                 int            `orm:"column(Id_Canciones);pk;auto"`
 	TituloCancion      string         `orm:"column(Titulo_Cancion)"`
 	IdArtistas         *Artista       `orm:"column(Id_Artistas);rel(fk)"`
 	Album              string         `orm:"column(Album)"`
@@ -20,8 +20,8 @@ type Canciones struct {
 	Duracion           string         `orm:"column(Duracion)"`
 	RutaArchivo        string         `orm:"column(Ruta_Archivo)"`
 	Activo             bool           `orm:"column(Activo)"`
-	FechaCreacion      time.Time      `orm:"column(Fecha_Creacion);type(timestamp with time zone)"`
-	FechaModificacion  time.Time      `orm:"column(Fecha_Modificacion);type(timestamp with time zone)"`
+	FechaCreacion      time.Time      `orm:"column(Fecha_Creacion);type(timestamp with time zone);auto_now_add"`
+	FechaModificacion  time.Time      `orm:"column(Fecha_Modificacion);type(timestamp with time zone);auto_now"`
 	FkArtistaCanciones int            `orm:"column(Fk_Artista_Canciones)"`
 }
 
@@ -37,6 +37,7 @@ func init() {
 // last inserted Id on success.
 func AddCanciones(m *Canciones) (id int64, err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	id, err = o.Insert(m)
 	return
 }
@@ -57,7 +58,7 @@ func GetCancionesById(id int) (v *Canciones, err error) {
 func GetAllCanciones(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(Canciones))
+	qs := o.QueryTable(new(Canciones)).RelatedSel()
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute

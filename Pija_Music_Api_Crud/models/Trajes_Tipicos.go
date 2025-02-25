@@ -11,16 +11,16 @@ import (
 )
 
 type TrajesTipicos struct {
-	Id                int       `orm:"column(Id_Trajes);pk"`
+	Id                int       `orm:"column(Id_Trajes);pk;auto"`
 	NombreTrajes      string    `orm:"column(Nombre_Trajes)"`
 	Region            string    `orm:"column(Region)"`
 	OcasionUso        string    `orm:"column(Ocasion_Uso);null"`
 	Materiales        string    `orm:"column(Materiales);null"`
 	DescripcionTrajes string    `orm:"column(Descripcion_Trajes);null"`
-	ImagenVideo       string    `orm:"column(Imagen_video);type(json)"`
+	ImagenVideo       string    `orm:"column(Imagen_video);type(text)"`
 	Activo            bool      `orm:"column(Activo)"`
-	FechaCreacion     time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone)"`
-	FechaModificacion time.Time `orm:"column(Fecha_Modificacion);type(timestamp with time zone)"`
+	FechaCreacion     time.Time `orm:"column(Fecha_Creacion);type(timestamp with time zone);auto_now_add"`
+	FechaModificacion time.Time `orm:"column(Fecha_Modificacion);type(timestamp with time zone);auto_now"`
 }
 
 func (t *TrajesTipicos) TableName() string {
@@ -35,6 +35,7 @@ func init() {
 // last inserted Id on success.
 func AddTrajesTipicos(m *TrajesTipicos) (id int64, err error) {
 	o := orm.NewOrm()
+	m.Activo = true
 	id, err = o.Insert(m)
 	return
 }
